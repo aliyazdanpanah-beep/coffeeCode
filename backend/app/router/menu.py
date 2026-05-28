@@ -104,8 +104,10 @@ async def update_category(db: db_dependency, category_request = categoryRequest,
 
 
 @router.post('/create/category/', status_code=status.HTTP_201_CREATED)
-async def create_category(db:db_dependency, request_category: categoryRequest):
-     category_model = categorys(**request_category.model_dump())
+async def create_category(user: user_dependency, db:db_dependency, request_category: categoryRequest):
+     if user is None:
+          raise HTTPException(status_code=401, detail='Unauthorized')
+     category_model = categorys(**request_category.model_dump(), owner_id=user.get('id'))
 
      db.add(category_model)
      db.commit()
