@@ -40,39 +40,34 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 
-# محیط مجازی پایتون
+# python venv
 backend/fastapienv/
 venv/
 env/
 ENV/
 
-# فایل‌های کامپایل شده پایتون
+# compile files in pytohn
 __pycache__/
 *.pyc
 *.pyo
 *.pyd
 
-# فایل‌های دیتابیس
-*.db
-*.sqlite
-*.sqlite3
-
-# فایل‌های محیطی و کانفیگ محلی
+# locall files
 .env
 *.local
 config.local.*
 
-# لاگ فایل‌ها
+# file logs
 *.log
 logs/
 
-# فایل‌های موقتی
+# other files
 *.tmp
 *.temp
 .DS_Store
 Thumbs.db
 
-# فایل‌های ادیتور
+# editor requerment file
 .vscode/
 .idea/
 *.swp
