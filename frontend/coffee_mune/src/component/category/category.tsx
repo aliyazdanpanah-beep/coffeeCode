@@ -1,5 +1,3 @@
-// components/category/category.tsx
-
 "use client";
 
 interface CategoryProps {
@@ -15,32 +13,36 @@ const Category = ({
   onSelectCategory,
   isLoading,
 }: CategoryProps) => {
-  const allCategories = [{ id: 0, title: 'all' }, ...categories];
+  const allCategories = [{ id: 0, title: "all", img: "" }, ...categories];
 
   if (isLoading) {
     return (
-      <div className="flex justify-center items-center gap-2 py-8">
-        <div className="w-6 h-6 border-2 border-orange-500 border-t-transparent rounded-full animate-spin"></div>
-        <span className="text-gray-500"> Loading ...</span>
+      <div className="flex justify-center items-center gap-3 py-8">
+        <div className="w-6 h-6 border-2 border-amber-700 border-t-transparent rounded-full animate-spin" />
+        <span className="text-stone-500">Loading categories...</span>
       </div>
     );
   }
 
   return (
-    <div className="mb-8">
-    
-      
-      <div className="flex flex-wrap gap-3 justify-start">
+    <div className="mb-10">
+      <div className="flex flex-wrap justify-center gap-3">
         {allCategories.map((item) => (
           <button
             key={item.id}
             onClick={() => onSelectCategory(item.title)}
-            className={`px-5 py-2.5 rounded-lg text-sm font-medium transition-all duration-200 
+            className={`
+              px-5 py-2.5
+              rounded-full
+              text-sm
+              font-medium
+              transition-colors
               ${
                 selectedCategory === item.title
-                  ? "bg-slate-800 text-white shadow-lg"
-                  : "bg-white text-gray-600 border border-gray-200 hover:border-slate-400 hover:bg-gray-50"
-              }`}
+                  ? "bg-amber-800 text-white"
+                  : "bg-white text-stone-600 border border-stone-200 hover:bg-stone-50"
+              }
+            `}
           >
             {item.title}
           </button>

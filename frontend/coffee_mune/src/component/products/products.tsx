@@ -1,3 +1,5 @@
+"use client";
+
 interface Product {
   id: number;
   img: string;
@@ -11,6 +13,13 @@ interface ProductsProps {
   isLoading: boolean;
 }
 
+const categoryIcons: Record<string, string> = {
+  coffee: "☕",
+  pizza: "🍕",
+  drink: "🥤",
+  "fast food": "🍔",
+};
+
 const Products = ({ products, isLoading }: ProductsProps) => {
   const formatPrice = (price: number) => {
     return price.toLocaleString("en-US");
@@ -18,57 +27,93 @@ const Products = ({ products, isLoading }: ProductsProps) => {
 
   if (isLoading) {
     return (
-      <div className="flex items-center justify-center py-16">
-        <div className="h-7 w-7 animate-spin rounded-full border-2 border-gray-300 border-t-black" />
+      <div className="flex justify-center items-center gap-3 py-16">
+        <div className="w-8 h-8 border-2 border-amber-700 border-t-transparent rounded-full animate-spin" />
+        <span className="text-stone-500">Loading menu...</span>
       </div>
     );
   }
 
   if (products.length === 0) {
     return (
-      <div className="rounded-2xl border border-gray-100 bg-white py-14 text-center">
-        <p className="text-sm text-gray-400">No products found</p>
+      <div className="bg-white border border-stone-200 rounded-2xl py-16 text-center">
+        <p className="text-stone-500">No items found</p>
       </div>
     );
   }
 
   return (
-    <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4">
+    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
       {products.map((item) => (
         <div
           key={item.id}
-          className="group overflow-hidden rounded-2xl border border-gray-100 bg-white transition-all duration-300 hover:shadow-lg"
+          className="
+            bg-white
+            rounded-2xl
+            border
+            border-stone-200
+            overflow-hidden
+            shadow-sm
+            hover:shadow-md
+            transition-shadow
+            duration-200
+          "
         >
-          {/* Image */}
-
-          <div className="relative h-32 w-full overflow-hidden bg-gray-100 sm:h-40 md:h-44">
-            <img
-              src={item.img}
-              alt={item.name}
-              className="h-full w-full object-cover object-center transition-transform duration-500 group-hover:scale-105"
-            />
+          {/* Image / Placeholder */}
+          <div className="h-44 bg-linear-to-br from-amber-50 to-stone-100 flex items-center justify-center">
+            {item.img ? (
+              <img
+                src={item.img}
+                alt={item.name}
+                className="w-full h-full object-cover"
+              />
+            ) : (
+              <span className="text-5xl">
+                {categoryIcons[item.category.toLowerCase()] || "☕"}
+              </span>
+            )}
           </div>
 
-
           {/* Content */}
-          <div className="space-y-2 p-3 sm:p-4">
-            {/* Category */}
-            <p className="truncate text-[10px] uppercase tracking-[0.15em] text-gray-400 sm:text-xs">
-              {item.category}
-            </p>
-
-            {/* Name */}
-            <h3 className="line-clamp-1 text-sm font-semibold text-gray-900 sm:text-base">
+          <div className="p-5">
+            <h3 className="text-base font-semibold text-stone-800 truncate">
               {item.name}
             </h3>
 
-            {/* Bottom */}
-            <div className="flex items-center justify-between pt-1">
-              <span className="text-sm font-bold text-black sm:text-base">
+            <span
+              className="
+                inline-block
+                mt-3
+                px-3
+                py-1
+                rounded-full
+                bg-amber-50
+                text-amber-800
+                text-xs
+                font-medium
+              "
+            >
+              {item.category}
+            </span>
+
+            <div className="mt-5 flex items-center justify-between">
+              <span className="text-lg font-bold text-amber-800">
                 ${formatPrice(item.price)}
               </span>
 
-              <button className="rounded-lg bg-black px-3 py-1.5 text-[11px] font-medium text-white transition-all duration-200 hover:bg-gray-800 sm:px-4 sm:py-2 sm:text-sm">
+              <button
+                className="
+                  px-4
+                  py-2
+                  rounded-lg
+                  bg-stone-800
+                  text-white
+                  text-sm
+                  font-medium
+                  hover:bg-stone-700
+                  transition-colors
+                "
+              >
                 Order
               </button>
             </div>

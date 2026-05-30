@@ -25,14 +25,14 @@ const Home = () => {
       : allProducts.filter((item) => item.category === selectedCategory);
 
   return (
-    <section className="min-h-screen bg-gray-50">
+    <section className="min-h-screen bg-stone-50">
       {/* Header */}
       <div className="bg-white shadow-sm sticky top-0 z-50">
         <Header />
       </div>
 
       {/* Main Content */}
-      <main className="container mx-auto px-4 py-8">
+      <main className="max-w-7xl mx-auto px-6 py-10">
         {/* Category Buttons */}
         <Category
           categories={categories}
@@ -42,10 +42,7 @@ const Home = () => {
         />
 
         {/* Products Grid */}
-        <Products
-          products={filteredProducts}
-          isLoading={productLoading}
-        />
+        <Products products={filteredProducts} isLoading={productLoading} />
       </main>
     </section>
   );
