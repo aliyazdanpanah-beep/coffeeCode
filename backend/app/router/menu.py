@@ -47,10 +47,8 @@ async def get_all_data(db: db_dependency):
 
 
 @router.post('/create/products/', status_code=status.HTTP_201_CREATED)
-async def create_product(user: user_dependency, db: db_dependency, product_request: apiRequest):
-     if user is None:
-          raise HTTPException(status_code=401, detail='Unauthorized')
-     product_model = Products(**product_request.model_dump(), owner_id=user.get('id'))
+async def create_product(db: db_dependency, product_request: apiRequest):
+     product_model = Products(**product_request.model_dump())
      
      db.add(product_model)
      db.commit()
@@ -103,10 +101,8 @@ async def update_category(db: db_dependency, category_request = categoryRequest,
 
 
 @router.post('/create/category/', status_code=status.HTTP_201_CREATED)
-async def create_category(user: user_dependency, db:db_dependency, request_category: categoryRequest):
-     if user is None:
-          raise HTTPException(status_code=401, detail='Unauthorized')
-     category_model = categorys(**request_category.model_dump(), owner_id=user.get('id'))
+async def create_category(db:db_dependency, request_category: categoryRequest):
+     category_model = categorys(**request_category.model_dump())
 
      db.add(category_model)
      db.commit()
