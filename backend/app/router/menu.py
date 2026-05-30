@@ -2,7 +2,6 @@ from fastapi import APIRouter, Path, Depends, HTTPException
 from sqlalchemy.orm import Session
 from database import engine, SessionLocal
 from pydantic import BaseModel, Field
-from fastapi.middleware.cors import CORSMiddleware 
 from typing import Annotated
 from starlette import status
 import models
