@@ -42,21 +42,31 @@ class categoryRequest(BaseModel):
 
 
 @router.get('/product', status_code=status.HTTP_200_OK)
-async def get_all_data(db: db_dependency):
-     return db.query(Products).all()
+async def get_all_data(user: user_dependency, db: db_dependency):
+     if user is None:
+          raise HTTPException(status=401, detail="Authenticated Failed")
+     return db.query(Products).filter(Products.owner_id == user.get('id')).all()
 
 
 @router.post('/create/products/', status_code=status.HTTP_201_CREATED)
-async def create_product(db: db_dependency, product_request: apiRequest):
-     product_model = Products(**product_request.model_dump())
+async def create_product(user: user_dependency,
+     db: db_dependency, product_request: apiRequest):
+
+     if user is None:
+          raise HTTPException(status=401, detail="Authenticated Failed")
+     product_model = Products(**product_request.model_dump(), owner_id = user.get('id'))
      
      db.add(product_model)
      db.commit()
 
 
 @router.put('/update/product/{products_id}')
-async def update_products(db: db_dependency, product_request: apiRequest, products_id: int = Path(gt=0)):
-     product_model = db.query(Products).filter(Products.id == products_id).first()
+async def update_products(user: user_dependency, 
+                          db: db_dependency, product_request: apiRequest, products_id: int = Path(gt=0)):
+     if user is None:
+          raise HTTPException(status=401, detail="Authenticated Failed")
+      
+     product_model = db.query(Products).filter(Products.id == products_id).filter(Products.owner_id == user.get('id')).first()
      if product_model is None:
           raise HTTPException(status_code=404, detail="product not found")
      
@@ -70,8 +80,12 @@ async def update_products(db: db_dependency, product_request: apiRequest, produc
 
 
 @router.delete('/product/delete/{product_id}')
-async def delete_product_by_id(db: db_dependency, product_id: int = Path(gt=0)):
-     product_mode = db.query(Products).filter(Products.id == product_id).first()
+async def delete_product_by_id(user: user_dependency,
+                               db: db_dependency, product_id: int = Path(gt=0)):
+     if user is None:
+          raise HTTPException(status=401, detail="Authenticated Failed")
+     
+     product_mode = db.query(Products).filter(Products.id == product_id).filter(Products.owner_id == user.get('id')).first()
      if product_mode is None:
           raise HTTPException(status_code=404, detail='product not found')
      db.query(Products).filter(Products.id == product_id).delete()
@@ -82,14 +96,20 @@ async def delete_product_by_id(db: db_dependency, product_id: int = Path(gt=0)):
 
 
 @router.get('/categorys', status_code=status.HTTP_200_OK)
-async def get_app_category(db: db_dependency):
-     return db.query(categorys).all()
+async def get_app_category(user: user_dependency, db: db_dependency):
+     if user is None:
+          raise HTTPException(status=401, detail="Authenticated Failed")
+    
+     return db.query(categorys).filter(Products.owner_id == user.get('id')).all()
 
 
 
 @router.put('/api/update/categorys/{category_id}', status_code=status.HTTP_200_OK)
-async def update_category(db: db_dependency, category_request = categoryRequest, category_id: int = Path(gt=0)):
-     category_model = db.query(categorys).filter(categorys.id == category_id).first()
+async def update_category(user: user_dependency, db: db_dependency, category_request = categoryRequest, category_id: int = Path(gt=0)):
+     if user is None:
+          raise HTTPException(status=401, detail="Authenticated Failed")
+    
+     category_model = db.query(categorys).filter(categorys.id == category_id).filter(Products.owner_id == user.get('id')).first()
      if category_model is None:
           raise HTTPException(status_code=404, detail="product not found")
      
@@ -101,16 +121,22 @@ async def update_category(db: db_dependency, category_request = categoryRequest,
 
 
 @router.post('/create/category/', status_code=status.HTTP_201_CREATED)
-async def create_category(db:db_dependency, request_category: categoryRequest):
-     category_model = categorys(**request_category.model_dump())
+async def create_category(user: user_dependency, db:db_dependency, request_category: categoryRequest):
+     if user is None:
+          raise HTTPException(status=401, detail="Authenticated Failed")
+    
+     category_model = categorys(**request_category.model_dump(), owner_id = user.get('id'))
 
      db.add(category_model)
      db.commit()
 
 
 @router.delete('/categor/delete/{category_id}')
-async def delete_category_by_id(db:db_dependency, category_id: int = Path(gt=0)):
-     category_model = db.query(categorys).filter(categorys.id == category_id).first()
+async def delete_category_by_id(user: user_dependency, db:db_dependency, category_id: int = Path(gt=0)):
+     if user is None:
+          raise HTTPException(status=401, detail="Authenticated Failed")
+    
+     category_model = db.query(categorys).filter(categorys.id == category_id).filter(Products.owner_id == user.get('id')).first()
      if category_model is None:
           raise HTTPException(status_code=404, detail='category not found')
      
