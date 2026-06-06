@@ -100,7 +100,7 @@ async def get_app_category(user: user_dependency, db: db_dependency):
      if user is None:
           raise HTTPException(status=401, detail="Authenticated Failed")
     
-     return db.query(categorys).filter(Products.owner_id == user.get('id')).all()
+     return db.query(categorys).filter(categorys.owner_id == user.get('id')).all()
 
 
 
@@ -109,7 +109,7 @@ async def update_category(user: user_dependency, db: db_dependency, category_req
      if user is None:
           raise HTTPException(status=401, detail="Authenticated Failed")
     
-     category_model = db.query(categorys).filter(categorys.id == category_id).filter(Products.owner_id == user.get('id')).first()
+     category_model = db.query(categorys).filter(categorys.id == category_id).filter(categorys.owner_id == user.get('id')).first()
      if category_model is None:
           raise HTTPException(status_code=404, detail="product not found")
      
