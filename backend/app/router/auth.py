@@ -24,12 +24,12 @@ oauth2_bearer = OAuth2PasswordBearer(tokenUrl='auth/token')
 
 
 class CreateUserRequest(BaseModel):
-     username: str
-     email: str
-     first_name: str
-     last_name: str
+     username: str = Field(max_length=200)
+     email: str = Field(max_length=200)
+     first_name: str = Field(max_length=72)
+     last_name: str = Field(max_length=72)
      password: str = Field(max_length=72)
-     role: str
+     role: str = Field(max_length=72)
 
 
 class Token(BaseModel):
