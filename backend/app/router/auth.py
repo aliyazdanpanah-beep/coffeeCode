@@ -1,3 +1,6 @@
+import os
+
+from dotenv import load_dotenv
 from fastapi import APIRouter, Depends, HTTPException
 from pydantic import BaseModel, Field
 from models import Users
@@ -16,7 +19,12 @@ router = APIRouter(
      tags=['auth']
 )
 
-SECRET_KEY = "72682jh8276253ecj3876fggh59436jh456753"
+load_dotenv()
+
+SECRET_KEY = os.getenv('SECRET_KEY')
+if not SECRET_KEY:
+     raise RuntimeError('SECRET_KEY is not set in the environment')
+
 ALGORITHM = "HS256"
 
 bcrypt_context = CryptContext(schemes=['bcrypt'], deprecated='auto')
